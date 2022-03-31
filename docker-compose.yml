@@ -1,0 +1,10 @@
+version: '1'
+services:
+  mcclimate_encoder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MODULE_NAME: mcclimate_encoder
+      HOST_NAME: 127.0.0.1
+      HOST_PORT: 80

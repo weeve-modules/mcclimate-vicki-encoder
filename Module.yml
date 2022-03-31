@@ -1,0 +1,37 @@
+version: 1.0.0
+name: McClimate Vicki Encoder
+description: Encoder for McClimate Vicki Encoder
+icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_m-climate_process.png
+type: input
+tags:
+  - McClimate
+  - Vicki
+  - Encoder
+categories:
+  - id: category
+    name: Encoder
+image:
+  name: weevenetwork/mcclimate-vicki-encoder
+  tag: latest
+environments:
+  - key: HOST_NAME
+    description: Host name/address where the server will run.
+    value: ''
+    default: 0.0.0.0
+    type: string
+    name: Host Name
+  - key: HOST_PORT
+    description: Port on which the server will run.
+    value: ''
+    default: 80
+    type: integer
+    name: Port
+commands: []
+document:
+  ports: []
+  volumes: []
+  restart_policy:
+    condition: on-failure
+    delay: 10s
+    max_attempts: 3
+    window: 120s
