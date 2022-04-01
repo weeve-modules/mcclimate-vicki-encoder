@@ -1,11 +1,11 @@
-const { HOST_NAME, HOST_PORT, MODULE_NAME } = require('./config/config.js')
+const { HOST_NAME, HOST_PORT, MODULE_NAME, EXECUTE_SINGLE_COMMAND, SINGLE_COMMAND } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-//const { decode } = require('./utils/decoder')
+const { execute, isSetterCommand } = require('./utils/encoder')
 const { formatTimeDiff } = require('./utils/util')
 
 //initialization
@@ -48,8 +48,28 @@ app.post('/', async (req, res) => {
   if (!json) {
     res.status(400).json({ status: false, message: 'Payload structure is not valid.' })
   }
+  if (EXECUTE_SINGLE_COMMAND == 'no' && !json.command) {
+    res.status(400).json({ status: false, message: 'Command is missing.' })
+  } else if (EXECUTE_SINGLE_COMMAND == 'no' && isSetterCommand(json.command) && !json.params) {
+    res.status(400).json({ status: false, message: 'Parameters are missing.' })
+  }
+  if (EXECUTE_SINGLE_COMMAND == 'yes' && !json.params) {
+    res.status(400).json({ status: false, message: 'Parameters are missing.' })
+  }
+  let result = false
+  if (EXECUTE_SINGLE_COMMAND == 'yes') {
+    result = execute(SINGLE_COMMAND, json.params)
+  } else {
+    result = execute(json.command, json.params)
+  }
+  if (result === false) {
+    res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })
+  }
   // parse data property, and update it
-  res.status(200).json(json)
+  res.status(200).json({
+    status: true,
+    data: result,
+  })
 })
 
 //handle exceptions

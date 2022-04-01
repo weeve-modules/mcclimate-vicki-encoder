@@ -26,6 +26,47 @@ environments:
     default: 80
     type: integer
     name: Port
+  - key: EXECUTE_SINGLE_COMMAND
+    description: Only execute single command via call
+    value: ''
+    default: no
+    type: enum
+    options:
+      - yes
+      - no
+    name: Execute single command
+  - key: SINGLE_COMMAND
+    value: ''
+    default:
+    type: enum
+    options:
+      - forceClose,
+      - getAllParams,
+      - getChildLock,
+      - getInternalAlgoParams,
+      - getInternalAlgoTdiffParams,
+      - getJoinRetryPeriod,
+      - getKeepAliveTime,
+      - getOpenWindowParams,
+      - getOpenWindowParams,
+      - getOperationalMode,
+      - getTemperatureRange,
+      - getUplinkType,
+      - recalibrateMotor,
+      - receivedKeepaliveCommand,
+      - sendCustomHexCommand,
+      - setChildLock,
+      - setInternalAlgoParams,
+      - setInternalAlgoTdiffParams,
+      - setJoinRetryPeriod,
+      - setKeepAlive,
+      - setOpenWindow,
+      - setOperationalMode,
+      - setTargetTemperature,
+      - setTargetTemperatureAndMotorPosition,
+      - setTemperatureRange,
+      - setUplinkType
+    name: Single command name
 commands: []
 document:
   ports: []
