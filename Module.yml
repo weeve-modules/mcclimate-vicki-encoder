@@ -26,6 +26,12 @@ environments:
     default: 80
     type: integer
     name: Port
+  - key: EGRESS_URL
+    description: URL to pass the result payload to
+    value: ''
+    default: 0.0.0.0
+    type: string
+    name: Egress URL
   - key: EXECUTE_SINGLE_COMMAND
     description: Only execute single command via call
     value: ''
