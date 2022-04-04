@@ -29,7 +29,7 @@ environments:
   - key: EGRESS_URL
     description: URL to pass the result payload to
     value: ''
-    default: 0.0.0.0
+    default:
     type: string
     name: Egress URL
   - key: EXECUTE_SINGLE_COMMAND
