@@ -48,19 +48,19 @@ app.post('/', async (req, res) => {
   if (!json) {
     res.status(400).json({ status: false, message: 'Payload structure is not valid.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'no' && !json.command) {
+  if (EXECUTE_SINGLE_COMMAND == 'no' && !json.data.command) {
     res.status(400).json({ status: false, message: 'Command is missing.' })
-  } else if (EXECUTE_SINGLE_COMMAND == 'no' && isSetterCommand(json.command) && !json.params) {
+  } else if (EXECUTE_SINGLE_COMMAND == 'no' && isSetterCommand(json.data.command.name) && !json.data.command.params) {
     res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'yes' && !json.params) {
+  if (EXECUTE_SINGLE_COMMAND == 'yes' && !json.data.command.params) {
     res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
   let result = false
   if (EXECUTE_SINGLE_COMMAND == 'yes') {
-    result = execute(SINGLE_COMMAND, json.params)
+    result = execute(SINGLE_COMMAND, json.data.command.params)
   } else {
-    result = execute(json.command, json.params)
+    result = execute(json.data.command.name, json.data.command.params)
   }
   if (result === false) {
     res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })

@@ -82,10 +82,13 @@ Encoder for Vicki LoRaWAN's commands.
 * All setter commands (starting with 'set') require additional parameter values that need to be passed in params argument, so payload can look like this:
 ```js
 {
-	"command":"setTargetTemperatureAndMotorPosition",
-	"params":{
-		"motorPosition": 1,
-		"targetTemperature": 190		
+	"data": {
+		"command": {
+			"name": "setTargetTemperature",
+			"params": {
+				"targetTemperature": 20
+			}
+		}
 	}
 }
 ```
@@ -93,9 +96,12 @@ Encoder for Vicki LoRaWAN's commands.
 * If command is setup in module settings then only params need to be passed
 ```js
 {	
-	"params":{
-		"motorPosition": 1,
-		"targetTemperature": 190		
+	"data": {
+		"command": {			
+			"params": {
+				"targetTemperature": 20
+			}
+		}
 	}
 }
 ```
