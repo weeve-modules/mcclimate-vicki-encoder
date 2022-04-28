@@ -1,10 +1,10 @@
 version: '1'
 services:
-  mcclimate_encoder:
+  mcclimate-encoder:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      MODULE_NAME: mcclimate_encoder
+      MODULE_NAME: mcclimate-encoder
       INGRESS_HOST: 127.0.0.1
       INGRESS_PORT: 80
