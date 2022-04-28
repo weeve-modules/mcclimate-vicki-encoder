@@ -28,7 +28,6 @@ Encoder for Vicki LoRaWAN's commands.
 
 - INGRESS_HOST
 - INGRESS_PORT
-- EGRESS_URL
 - EXECUTE_SINGLE_COMMAND
 - SINGLE_COMMAND
 
@@ -41,7 +40,6 @@ Encoder for Vicki LoRaWAN's commands.
 | MODULE_NAME | string | Name of the module |
 | INGRESS_HOST | string | Host where app is running |
 | INGRESS_PORT | string | Port where app is running |
-| EGRESS_URL | string | URL for passing the result output to next module |
 | EXECUTE_SINGLE_COMMAND | string | yes/no to specify if module supports only executing single command |
 | SINGLE_COMMAND | string | if EXECUTE_SINGLE_COMMAND=no, then users will have to provide in request "command" parameter with command name |
 
