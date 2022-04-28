@@ -1,0 +1,66 @@
+version: 1.0.0
+name: McClimate Vicki Encoder
+description: Encoder for McClimate Vicki Encoder
+icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_m-climate_process.png
+type: process
+tags:
+  - McClimate
+  - Vicki
+  - Encoder
+categories:
+  - id: category
+    name: Encoder
+image:
+  name: weevenetwork/mcclimate-vicki-encoder
+  tag: latest
+environments:
+  - key: EXECUTE_SINGLE_COMMAND
+    description: Only execute single command via call
+    value: ''
+    default: no
+    type: enum
+    options:
+      - yes
+      - no
+    name: Execute single command
+  - key: SINGLE_COMMAND
+    value: ''
+    default:
+    type: enum
+    options:
+      - forceClose,
+      - getAllParams,
+      - getChildLock,
+      - getInternalAlgoParams,
+      - getInternalAlgoTdiffParams,
+      - getJoinRetryPeriod,
+      - getKeepAliveTime,
+      - getOpenWindowParams,
+      - getOpenWindowParams,
+      - getOperationalMode,
+      - getTemperatureRange,
+      - getUplinkType,
+      - recalibrateMotor,
+      - receivedKeepaliveCommand,
+      - sendCustomHexCommand,
+      - setChildLock,
+      - setInternalAlgoParams,
+      - setInternalAlgoTdiffParams,
+      - setJoinRetryPeriod,
+      - setKeepAlive,
+      - setOpenWindow,
+      - setOperationalMode,
+      - setTargetTemperature,
+      - setTargetTemperatureAndMotorPosition,
+      - setTemperatureRange,
+      - setUplinkType
+    name: Single command name
+commands: []
+document:
+  ports: []
+  volumes: []
+  restart_policy:
+    condition: on-failure
+    delay: 10s
+    max_attempts: 3
+    window: 120s
