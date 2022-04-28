@@ -4,10 +4,10 @@
 | -------------- | ---------------------------------------- |
 | Name           | McClimate Vicki Encoder                  |
 | Version        | v1.0.0                                   |
-| Dockerhub Link | [weevenetwork/mcclimate-vicki-encoder]() |
+| Dockerhub Link | [weevenetwork/mcclimate-vicki-encoder](https://hub.docker.com/r/weevenetwork/mcclimate-vicki-encoder) |
 | Authors        | Mesud Pasic                              |
 
-- [MQTT Ingress](#mcclimate-decoder)
+- [McClimate Vicki Encoder](#mcclimate-vicki-encoder)
   - [Description](#description)
   - [Features](#features)
   - [Environment Variables](#environment-variables)
@@ -26,10 +26,10 @@ Encoder for Vicki LoRaWAN's commands.
 
 ## Environment Variables
 
-- INGRESS_HOST
-- INGRESS_PORT
-- EXECUTE_SINGLE_COMMAND
-- SINGLE_COMMAND
+| Environment Variables | type | Description |
+| --- | --- | --- |
+| EXECUTE_SINGLE_COMMAND | string | yes/no to specify if module supports only executing single command |
+| SINGLE_COMMAND | string | if EXECUTE_SINGLE_COMMAND=no, then users will have to provide in request "command" parameter with command name |
 
 ### Module Specific
 
@@ -40,8 +40,6 @@ Encoder for Vicki LoRaWAN's commands.
 | MODULE_NAME | string | Name of the module |
 | INGRESS_HOST | string | Host where app is running |
 | INGRESS_PORT | string | Port where app is running |
-| EXECUTE_SINGLE_COMMAND | string | yes/no to specify if module supports only executing single command |
-| SINGLE_COMMAND | string | if EXECUTE_SINGLE_COMMAND=no, then users will have to provide in request "command" parameter with command name |
 
 ## Available custom commands
 
