@@ -1,4 +1,11 @@
-const { EGRESS_URL, HOST_NAME, HOST_PORT, MODULE_NAME, EXECUTE_SINGLE_COMMAND, SINGLE_COMMAND } = require('./config/config.js')
+const {
+  EGRESS_URL,
+  INGRESS_HOST,
+  INGRESS_PORT,
+  MODULE_NAME,
+  EXECUTE_SINGLE_COMMAND,
+  SINGLE_COMMAND,
+} = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -48,12 +55,16 @@ app.post('/', async (req, res) => {
   if (!json) {
     res.status(400).json({ status: false, message: 'Payload structure is not valid.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'no' && !json.data.command) {
+  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.data.command === 'undefined') {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
-  } else if (EXECUTE_SINGLE_COMMAND == 'no' && isSetterCommand(json.data.command.name) && !json.data.command.params) {
+  } else if (
+    EXECUTE_SINGLE_COMMAND == 'no' &&
+    isSetterCommand(json.data.command.name) &&
+    typeof json.data.command.params === 'undefined'
+  ) {
     return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'yes' && !json.data.command.params) {
+  if (EXECUTE_SINGLE_COMMAND == 'yes' && typeof json.data.command.params === 'undefined') {
     return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
   let result = false
@@ -65,8 +76,7 @@ app.post('/', async (req, res) => {
   if (result === false) {
     res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })
   }
-  if (EGRESS_URL!=='')
-  {
+  if (EGRESS_URL !== '') {
     const callRes = await fetch(EGRESS_URL, {
       method: 'POST',
       headers: {
@@ -74,19 +84,18 @@ app.post('/', async (req, res) => {
       },
       body: JSON.stringify({
         data: result,
-      })
-    });
+      }),
+    })
     if (!callRes.ok) {
       return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URL}` })
     }
     return res.status(200).json({ status: true, message: 'Payload processed' })
-  } else
-  {
+  } else {
     // parse data property, and update it
     return res.status(200).json({
       status: true,
       data: result,
-    });
+    })
   }
 })
 
@@ -103,7 +112,7 @@ app.use(async (err, req, res, next) => {
 })
 
 if (require.main === module) {
-  app.listen(HOST_PORT, HOST_NAME, () => {
-    console.log(`${MODULE_NAME} listening on ${HOST_PORT}`)
+  app.listen(INGRESS_PORT, INGRESS_HOST, () => {
+    console.log(`${MODULE_NAME} listening on ${INGRESS_PORT}`)
   })
 }
