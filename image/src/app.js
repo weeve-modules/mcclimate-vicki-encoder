@@ -55,23 +55,24 @@ app.post('/', async (req, res) => {
   if (!json) {
     res.status(400).json({ status: false, message: 'Payload structure is not valid.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.data.command === 'undefined') {
+  console.log(JSON.stringify(json))
+  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.command === 'undefined') {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
   } else if (
     EXECUTE_SINGLE_COMMAND == 'no' &&
-    isSetterCommand(json.data.command.name) &&
-    typeof json.data.command.params === 'undefined'
+    isSetterCommand(json.command.name) &&
+    typeof json.command.params === 'undefined'
   ) {
     return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'yes' && typeof json.data.command.params === 'undefined') {
+  if (EXECUTE_SINGLE_COMMAND == 'yes' && typeof json.command.params === 'undefined') {
     return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
   let result = false
   if (EXECUTE_SINGLE_COMMAND == 'yes') {
-    result = execute(SINGLE_COMMAND, json.data.command.params)
+    result = execute(SINGLE_COMMAND, json.command.params)
   } else {
-    result = execute(json.data.command.name, json.data.command.params)
+    result = execute(json.command.name, json.command.params)
   }
   if (result === false) {
     res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })
