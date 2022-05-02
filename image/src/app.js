@@ -55,26 +55,39 @@ app.post('/', async (req, res) => {
   if (!json) {
     res.status(400).json({ status: false, message: 'Payload structure is not valid.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.data.command === 'undefined') {
+  /*
+  if json.command.params.data is present, it means command came from scheduer
+   and only that parts needs encoding otherwise check for json.command.name  
+  */
+  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.command === 'undefined') {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
-  } else if (
-    EXECUTE_SINGLE_COMMAND == 'no' &&
-    isSetterCommand(json.data.command.name) &&
-    typeof json.data.command.params === 'undefined'
-  ) {
-    return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
-  if (EXECUTE_SINGLE_COMMAND == 'yes' && typeof json.data.command.params === 'undefined') {
+  if (isSetterCommand(json.command.name) && typeof json.command.params === 'undefined') {
     return res.status(400).json({ status: false, message: 'Parameters are missing.' })
   }
   let result = false
-  if (EXECUTE_SINGLE_COMMAND == 'yes') {
-    result = execute(SINGLE_COMMAND, json.data.command.params)
+  let forward_payload = false
+  if (typeof json.command.params.data !== 'undefined') {
+    let c = json.command.params.data
+    result = execute(c.command.name, c.command.params)
+    if (result !== false) {
+      json.command.params.data = result
+    }
+    forward_payload = true
   } else {
-    result = execute(json.data.command.name, json.data.command.params)
+    if (EXECUTE_SINGLE_COMMAND == 'yes') {
+      result = execute(SINGLE_COMMAND, json.command.params)
+    } else {
+      result = execute(json.command.name, json.command.params)
+    }
   }
   if (result === false) {
     res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })
+  }
+  if (!forward_payload) {
+    json = {
+      data: result,
+    }
   }
   if (EGRESS_URL !== '') {
     const callRes = await fetch(EGRESS_URL, {
@@ -82,9 +95,7 @@ app.post('/', async (req, res) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        data: result,
-      }),
+      body: JSON.stringify(json),
     })
     if (!callRes.ok) {
       return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URL}` })
