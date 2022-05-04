@@ -32,7 +32,6 @@
     "prettier": "^2.3.0"
   },
   "dependencies": {
-    "body-parser": "^1.19.2",
     "express": "^4.17.3",
     "express-winston": "^4.2.0",
     "node-fetch": "^2.6.1",
