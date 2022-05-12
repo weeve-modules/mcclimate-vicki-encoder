@@ -11,7 +11,7 @@ const express = require('express')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-const { execute, isSetterCommand } = require('./utils/encoder')
+const { execute, isSetterCommand, hexToBase64 } = require('./utils/encoder')
 const { formatTimeDiff } = require('./utils/util')
 
 //initialization
@@ -80,7 +80,7 @@ app.post('/', async (req, res) => {
     let c = json.command.params.data
     result = execute(c.command.name, c.command.params)
     if (result !== false) {
-      json.command.params.data = result
+      json.command.params.data = hexToBase64(result)
     }
     forward_payload = true
   } else {
@@ -95,7 +95,7 @@ app.post('/', async (req, res) => {
   }
   if (!forward_payload) {
     json = {
-      data: result,
+      data: hexToBase64(result),
     }
   }
   if (EGRESS_URL !== '') {
@@ -114,7 +114,7 @@ app.post('/', async (req, res) => {
     // parse data property, and update it
     return res.status(200).json({
       status: true,
-      data: result,
+      data: hexToBase64(result),
     })
   }
 })

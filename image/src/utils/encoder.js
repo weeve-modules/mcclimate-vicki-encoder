@@ -258,7 +258,20 @@ const execute = (command, params) => {
   }
 }
 
+const hexToBase64 = hexstring => {
+  var isHex = /^[0-9a-fA-F]+$/
+  if (isHex.test(hexstring)) {
+    return Buffer.from(hexstring
+      .match(/\w{2}/g)
+      .map(function (a) {
+        return String.fromCharCode(parseInt(a, 16))
+      })
+      .join('')).toString('base64')
+  } else return hexstring
+}
+
 module.exports = {
   execute,
   isSetterCommand,
+  hexToBase64,
 }
