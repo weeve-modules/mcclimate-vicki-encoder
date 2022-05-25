@@ -25,7 +25,7 @@ environments:
     name: Execute single command
   - key: SINGLE_COMMAND
     value: ''
-    default:
+    default: ''
     type: enum
     options:
       - forceClose,
