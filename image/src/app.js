@@ -70,20 +70,23 @@ app.post('/', async (req, res) => {
   */
   if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.command === 'undefined') {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
-  }
-  if (isSetterCommand(json.command.name) && typeof json.command.params === 'undefined') {
-    return res.status(400).json({ status: false, message: 'Parameters are missing.' })
-  }
+  }  
   let result = false
   let forward_payload = false
   if (typeof json.command.params.data !== 'undefined') {
     let c = json.command.params.data
+    if (isSetterCommand(c.command.name) && typeof c.command.params === 'undefined') {
+      return res.status(400).json({ status: false, message: 'Parameters are missing.' })
+    }
     result = execute(c.command.name, c.command.params)
     if (result !== false) {
       json.command.params.data = hexToBase64(result)
     }
     forward_payload = true
   } else {
+    if (isSetterCommand(json.command.name) && typeof json.command.params === 'undefined') {
+      return res.status(400).json({ status: false, message: 'Parameters are missing.' })
+    }
     if (EXECUTE_SINGLE_COMMAND == 'yes') {
       result = execute(SINGLE_COMMAND, json.command.params)
     } else {
