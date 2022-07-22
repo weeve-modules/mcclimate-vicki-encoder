@@ -1,5 +1,5 @@
 const {
-  EGRESS_URL,
+  EGRESS_URLS,
   INGRESS_HOST,
   INGRESS_PORT,
   MODULE_NAME,
@@ -101,8 +101,8 @@ app.post('/', async (req, res) => {
       data: hexToBase64(result),
     }
   }
-  if (EGRESS_URL !== '') {
-    const callRes = await fetch(EGRESS_URL, {
+  if (EGRESS_URLS) {
+    const callRes = await fetch(EGRESS_URLS, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ app.post('/', async (req, res) => {
       body: JSON.stringify(json),
     })
     if (!callRes.ok) {
-      return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URL}` })
+      return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URLS}` })
     }
     return res.status(200).json({ status: true, message: 'Payload processed' })
   } else {

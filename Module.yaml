@@ -1,32 +1,28 @@
-version: 1.0.0
-name: McClimate Vicki Encoder
-description: Encoder for McClimate Vicki Encoder
-icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_m-climate_process.png
-type: process
-tags:
-  - McClimate
-  - Vicki
-  - Encoder
-categories:
-  - id: category
-    name: Encoder
+displayName: 'McClimate Vicki Encoder'       # Display name for the module that will be displayed in the UI.
+moduleName: 'mcclimate-vicki-encoder'        # Module name that will be used to reference the module, and uniquely identify the module and their versions.
+description: 'Encoder for McClimate Vicki Encoder'       # Module description that will be displayed in the UI.
+versionName: 'v1.0.0'                    # Module version name that will be used to reference the module version, and uniquely identify the module version with a common name.
+isPublic: true                          # Boolean value that indicates if the module is Public or Private.
+categories:                             # Array of category that will be used to group the module in the UI.
+  - 'McClimate'
+type: 'Processing'      # Module type (Input, Processing, Output) that will be used to group the module in the UI.
 image:
-  name: weevenetwork/mcclimate-vicki-encoder
-  tag: latest
-environments:
+  name: 'weevenetwork/mcclimate-vicki-encoder'     # Image name from the docker registry.
+  tag: 'latest'                               # Image tag from the docker registry.
+  homepage: 'https://hub.docker.com/weevenetwork/mcclimate-vicki-encoder'      # Image homepage from the docker registry.
+repository: 'https://github.com/weeve-modules/mcclimate-vicki-encoder'     # Repository URL to source code.
+envs:                                   # Array of environment variables that will be used to configure the module. Also used to show related fields on the UI.
   - key: EXECUTE_SINGLE_COMMAND
     description: Only execute single command via call
-    value: ''
-    default: no
-    type: enum
+    value: ''    
+    type: 'select'
     options:
       - yes
       - no
     name: Execute single command
   - key: SINGLE_COMMAND
     value: ''
-    default: ''
-    type: enum
+    type: 'select'
     options:
       - forceClose,
       - getAllParams,
@@ -55,12 +51,16 @@ environments:
       - setTemperatureRange,
       - setUplinkType
     name: Single command name
-commands: []
-document:
-  ports: []
-  volumes: []
-  restart_policy:
-    condition: on-failure
-    delay: 10s
-    max_attempts: 3
-    window: 120s
+ports:                                  # Array of ports that will be exposed by the module.
+  - container: 8080                     # Port number from the container.
+    host: 8080                          # Port number to map on the host.
+mounts:
+  - container: '/data'                  # Mount path from the container.
+    host: '/data'                       # Mount path to map on the host.
+tags:                                   # Array of tags.
+  - 'NodeJS'
+  - 'Processing'
+  - 'McClimate'
+  - 'Encoder'
+  - 'Boilerplate 1.0.0'
+icon: 'https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_m-climate_process.png'    # Icon URL that will be displayed in the UI.
