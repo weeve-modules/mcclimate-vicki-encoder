@@ -14,7 +14,7 @@ repository: 'https://github.com/weeve-modules/mcclimate-vicki-encoder'     # Rep
 envs:                                   # Array of environment variables that will be used to configure the module. Also used to show related fields on the UI.
   - key: EXECUTE_SINGLE_COMMAND
     description: Only execute single command via call
-    value: ''    
+    value: 'no'    
     type: 'select'
     options:
       - yes
