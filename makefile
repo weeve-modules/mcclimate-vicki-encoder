@@ -4,8 +4,16 @@ MODULE=weevenetwork/mclimate-vicki-encoder
 VERSION_NAME=v1.0.0
 
 lint:
-	npm run format
+	npm run lint
 .phony: lint
+
+lint-fix:
+	npm run lint-fix
+.phony: lint-fix
+
+format:
+	npm run format
+.phony: format
 
 run_app:
 	set -a && source .env && set +a && npm run start
