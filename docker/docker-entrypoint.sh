@@ -29,4 +29,4 @@ fi
 echo "[ENTRYPOINT] Environment validated."
 
 # CALL THE MAIN SCRIPT
-npm run start $@
+npm run start "$@"
