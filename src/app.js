@@ -1,5 +1,5 @@
 const {
-  EGRESS_URL,
+  EGRESS_URLS,
   INGRESS_HOST,
   INGRESS_PORT,
   MODULE_NAME,
@@ -14,7 +14,7 @@ const expressWinston = require('express-winston')
 const { execute, isSetterCommand, hexToBase64 } = require('./utils/encoder')
 const { formatTimeDiff } = require('./utils/util')
 
-//initialization
+// initialization
 app.use(express.urlencoded({ extended: true }))
 app.use(
   express.json({
@@ -28,7 +28,7 @@ app.use(
   })
 )
 
-//logger
+// logger
 app.use(
   expressWinston.logger({
     transports: [
@@ -50,7 +50,7 @@ app.use(
   })
 )
 const startTime = Date.now()
-//health check
+// health check
 app.get('/health', async (req, res) => {
   res.json({
     serverStatus: 'Running',
@@ -58,7 +58,7 @@ app.get('/health', async (req, res) => {
     module: MODULE_NAME,
   })
 })
-//main post listener
+// main post listener
 app.post('/', async (req, res) => {
   let json = req.body
   if (!json) {
@@ -68,13 +68,13 @@ app.post('/', async (req, res) => {
   if json.command.params.data is present, it means command came from scheduer
    and only that parts needs encoding otherwise check for json.command.name  
   */
-  if (EXECUTE_SINGLE_COMMAND == 'no' && typeof json.command === 'undefined') {
+  if (EXECUTE_SINGLE_COMMAND === 'no' && typeof json.command === 'undefined') {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
-  }  
+  }
   let result = false
   let forward_payload = false
   if (typeof json.command.params.data !== 'undefined') {
-    let c = json.command.params.data
+    const c = json.command.params.data
     if (isSetterCommand(c.command.name) && typeof c.command.params === 'undefined') {
       return res.status(400).json({ status: false, message: 'Parameters are missing.' })
     }
@@ -87,7 +87,7 @@ app.post('/', async (req, res) => {
     if (isSetterCommand(json.command.name) && typeof json.command.params === 'undefined') {
       return res.status(400).json({ status: false, message: 'Parameters are missing.' })
     }
-    if (EXECUTE_SINGLE_COMMAND == 'yes') {
+    if (EXECUTE_SINGLE_COMMAND === 'yes') {
       result = execute(SINGLE_COMMAND, json.command.params)
     } else {
       result = execute(json.command.name, json.command.params)
@@ -101,8 +101,8 @@ app.post('/', async (req, res) => {
       data: hexToBase64(result),
     }
   }
-  if (EGRESS_URL !== '') {
-    const callRes = await fetch(EGRESS_URL, {
+  if (EGRESS_URLS) {
+    const callRes = await fetch(EGRESS_URLS, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ app.post('/', async (req, res) => {
       body: JSON.stringify(json),
     })
     if (!callRes.ok) {
-      return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URL}` })
+      return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URLS}` })
     }
     return res.status(200).json({ status: true, message: 'Payload processed' })
   } else {
@@ -122,12 +122,12 @@ app.post('/', async (req, res) => {
   }
 })
 
-//handle exceptions
+// handle exceptions
 app.use(async (err, req, res, next) => {
   if (res.headersSent) {
     return next(err)
   }
-  let errCode = err.status || 401
+  const errCode = err.status || 401
   res.status(errCode).send({
     status: false,
     message: err.message,

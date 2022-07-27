@@ -1,0 +1,11 @@
+README.md
+makefile
+.vscode/
+.gitingore
+docker-compose.yml
+example.env
+node_modules/
+LICENSE
+.eslintignore
+.eslintrc.js
+.editorconfig 

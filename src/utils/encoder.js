@@ -87,7 +87,7 @@ const sendCustomHexCommand = command => {
 }
 
 const setChildLock = enabled => {
-  let enabledValue = enabled ? 1 : 0
+  const enabledValue = enabled ? 1 : 0
   return toHex('SetChildLock', 0x07, decToHex(enabledValue))
 }
 
@@ -101,7 +101,7 @@ const setInternalAlgoTdiffParams = (cold, warm) => {
 
 const setJoinRetryPeriod = period => {
   // period should be passed in minutes
-  let periodToPass = (period * 60) / 5
+  const periodToPass = (period * 60) / 5
   return toHex('SetJoinRetryPeriod', 0x10, parseInt(periodToPass).toString(16))
 }
 
@@ -110,12 +110,12 @@ const setKeepAlive = time => {
 }
 
 const setOpenWindow = (enabled, delta, closeTime, motorPosition) => {
-  let enabledValue = enabled ? 1 : 0
-  let closeTimeValue = parseInt(closeTime) / 5
+  const enabledValue = enabled ? 1 : 0
+  const closeTimeValue = parseInt(closeTime) / 5
   let motorPositionBin = `000000000000${parseInt(motorPosition, 10).toString(2)}`
   motorPositionBin = motorPositionBin.substr(-12)
-  let motorPositionFirstPart = parseInt(motorPositionBin.substr(4), 2, 16)
-  let motorPositionSecondPart = parseInt(motorPositionBin.substr(0, 4), 2, 16)
+  const motorPositionFirstPart = parseInt(motorPositionBin.substr(4), 2, 16)
+  const motorPositionSecondPart = parseInt(motorPositionBin.substr(0, 4), 2, 16)
 
   return toHex(
     'SetOpenWindow',
@@ -162,13 +162,12 @@ const commands = {
   getJoinRetryPeriod,
   getKeepAliveTime,
   getOpenWindowParams,
-  getOpenWindowParams,
   getOperationalMode,
   getTemperatureRange,
   getUplinkType,
   recalibrateMotor,
   receivedKeepaliveCommand,
-  //set functions
+  // set functions
   sendCustomHexCommand,
   setChildLock,
   setInternalAlgoParams,
@@ -190,8 +189,8 @@ const execute = (command, params) => {
     if (commands[command]) return commands[command]()
     else return false
   } else {
-    //first check if any key is null for "set" commands, if yes, return false
-    let keys = Object.keys(params)
+    // first check if any key is null for "set" commands, if yes, return false
+    const keys = Object.keys(params)
     keys.forEach(key => {
       if (params[key] == undefined || params[key] == null) {
         return false
@@ -259,14 +258,16 @@ const execute = (command, params) => {
 }
 
 const hexToBase64 = hexstring => {
-  var isHex = /^[0-9a-fA-F]+$/
+  const isHex = /^[0-9a-fA-F]+$/
   if (isHex.test(hexstring)) {
-    return Buffer.from(hexstring
-      .match(/\w{2}/g)
-      .map(function (a) {
-        return String.fromCharCode(parseInt(a, 16))
-      })
-      .join('')).toString('base64')
+    return Buffer.from(
+      hexstring
+        .match(/\w{2}/g)
+        .map(function (a) {
+          return String.fromCharCode(parseInt(a, 16))
+        })
+        .join('')
+    ).toString('base64')
   } else return hexstring
 }
 
