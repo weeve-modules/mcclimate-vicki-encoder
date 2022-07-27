@@ -1,4 +1,4 @@
-FROM node:current-stretch-slim
+FROM node:alpine
 
 # copy docker-entrypoint to initialize multi-stage build
 COPY ./docker/docker-entrypoint.sh /app/
