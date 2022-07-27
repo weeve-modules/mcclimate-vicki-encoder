@@ -4,7 +4,8 @@ description: 'Encoder for McClimate Vicki Encoder'       # Module description th
 versionName: 'v1.0.0'                    # Module version name that will be used to reference the module version, and uniquely identify the module version with a common name.
 isPublic: true                          # Boolean value that indicates if the module is Public or Private.
 categories:                             # Array of category that will be used to group the module in the UI.
-  - 'McClimate'
+  - 'Policies'
+  - 'Encoder'
 type: 'Processing'      # Module type (Input, Processing, Output) that will be used to group the module in the UI.
 image:
   name: 'weevenetwork/mcclimate-vicki-encoder'     # Image name from the docker registry.
