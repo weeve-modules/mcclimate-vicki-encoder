@@ -1,6 +1,6 @@
 SHELL := /bin/bash # to enable source command in run_app
 
-MODULE=weevenetwork/mclimate-vicki-encoder
+MODULE=weevenetwork/mcclimate-vicki-encoder
 VERSION_NAME=v1.0.0
 
 lint:
