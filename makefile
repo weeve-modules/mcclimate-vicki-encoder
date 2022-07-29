@@ -44,7 +44,7 @@ push_latest:
 .phony: push_latest
 
 create_and_push_multi_platform:
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7 -t ${MODULE}:${VERSION_NAME} --push . -f docker/Dockerfile
+	docker buildx build --platform linux/amd64,linux/arm,linux/arm64 -t ${MODULE}:${VERSION_NAME} --push . -f docker/Dockerfile
 .phony: create_and_push_multi_platform
 
 run_listener:
