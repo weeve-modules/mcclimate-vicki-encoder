@@ -4,7 +4,7 @@
 | --- | --- |
 | Name | McClimate Vicki Encoder |
 | Version | v1.0.0 |
-| Dockerhub Link | [weevenetwork/mcclimate-vicki-encoder](https://hub.docker.com/r/weevenetwork/mcclimate-vicki-encoder) |
+| DockerHub | [weevenetwork/mcclimate-vicki-encoder](https://hub.docker.com/r/weevenetwork/mcclimate-vicki-encoder) |
 | Authors | Mesud Pasic |
 
 - [McClimate Vicki Encoder](#mcclimate-vicki-encoder)
@@ -40,6 +40,7 @@ Encoder for Vicki LoRaWAN's commands.
 | MODULE_NAME           | string | Name of the module        |
 | INGRESS_HOST          | string | Host where app is running |
 | INGRESS_PORT          | string | Port where app is running |
+| EGRESS_URLS           | string | HTTP ReST endpoint for the next module            |
 
 ## Available custom commands
 
