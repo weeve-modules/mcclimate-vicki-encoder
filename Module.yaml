@@ -16,11 +16,12 @@ envs:                                   # Array of environment variables that wi
   - name: Execute single command
     key: EXECUTE_SINGLE_COMMAND
     description: Only execute single command via call
-    value: 'no'    
+    value: 'no'
     type: 'select'
     options:
       - yes
       - no
+    dependencies: []
   - name: Single command name
     key: SINGLE_COMMAND
     value: ''
@@ -52,6 +53,7 @@ envs:                                   # Array of environment variables that wi
       - setTargetTemperatureAndMotorPosition,
       - setTemperatureRange,
       - setUplinkType
+    dependencies: []
 ports:                                  # Array of ports that will be exposed by the module.
   - container: 8080                     # Port number from the container.
     host: 8080                          # Port number to map on the host.
