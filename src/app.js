@@ -12,7 +12,6 @@ const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
 const { execute, isSetterCommand, hexToBase64 } = require('./utils/encoder')
-const { formatTimeDiff } = require('./utils/util')
 
 // initialization
 app.use(express.urlencoded({ extended: true }))
@@ -49,15 +48,6 @@ app.use(
     }, // optional: allows to skip some log messages based on request and/or response
   })
 )
-const startTime = Date.now()
-// health check
-app.get('/health', async (req, res) => {
-  res.json({
-    serverStatus: 'Running',
-    uptime: formatTimeDiff(Date.now(), startTime),
-    module: MODULE_NAME,
-  })
-})
 // main post listener
 app.post('/', async (req, res) => {
   let json = req.body
@@ -72,7 +62,7 @@ app.post('/', async (req, res) => {
     return res.status(400).json({ status: false, message: 'Command is missing.' })
   }
   let result = false
-  let forward_payload = false
+  let forwardPayload = false
   if (typeof json.command.params.data !== 'undefined') {
     const c = json.command.params.data
     if (isSetterCommand(c.command.name) && typeof c.command.params === 'undefined') {
@@ -82,7 +72,7 @@ app.post('/', async (req, res) => {
     if (result !== false) {
       json.command.params.data = hexToBase64(result)
     }
-    forward_payload = true
+    forwardPayload = true
   } else {
     if (isSetterCommand(json.command.name) && typeof json.command.params === 'undefined') {
       return res.status(400).json({ status: false, message: 'Parameters are missing.' })
@@ -96,22 +86,33 @@ app.post('/', async (req, res) => {
   if (result === false) {
     res.status(400).json({ status: false, message: 'Bad command or Parameters provided.' })
   }
-  if (!forward_payload) {
+  if (!forwardPayload) {
     json = {
       data: hexToBase64(result),
     }
   }
   if (EGRESS_URLS) {
-    const callRes = await fetch(EGRESS_URLS, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(json),
-    })
-    if (!callRes.ok) {
-      return res.status(500).json({ status: false, message: `Error passing response data to ${EGRESS_URLS}` })
+    const urls = []
+    const eUrls = EGRESS_URLS.replace(/ /g, '')
+    if (eUrls.indexOf(',') !== -1) {
+      urls.push(...eUrls.split(','))
+    } else {
+      urls.push(eUrls)
     }
+    urls.forEach(async url => {
+      if (url) {
+        const callRes = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(json),
+        })
+        if (!callRes.ok) {
+          console.error(`Error passing response data to ${url}`)
+        }
+      }
+    })
     return res.status(200).json({ status: true, message: 'Payload processed' })
   } else {
     // parse data property, and update it
