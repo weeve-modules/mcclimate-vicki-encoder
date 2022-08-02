@@ -1,5 +1,5 @@
-const env = (key, defaultValue, isBoll = false) => {
-  if (isBoll) return process.env[key] === 'true'
+const env = (key, defaultValue, isBool = false) => {
+  if (isBool) return process.env[key] === 'true'
   return process.env[key] || defaultValue
 }
 
