@@ -6,12 +6,11 @@ const {
   EXECUTE_SINGLE_COMMAND,
   SINGLE_COMMAND,
 } = require('./config/config.js')
-const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-const { execute, isSetterCommand, hexToBase64 } = require('./utils/encoder')
+const { execute, isSetterCommand, hexToBase64, send } = require('./utils/encoder')
 
 // initialization
 app.use(express.urlencoded({ extended: true }))
@@ -92,27 +91,7 @@ app.post('/', async (req, res) => {
     }
   }
   if (EGRESS_URLS) {
-    const urls = []
-    const eUrls = EGRESS_URLS.replace(/ /g, '')
-    if (eUrls.indexOf(',') !== -1) {
-      urls.push(...eUrls.split(','))
-    } else {
-      urls.push(eUrls)
-    }
-    urls.forEach(async url => {
-      if (url) {
-        const callRes = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(json),
-        })
-        if (!callRes.ok) {
-          console.error(`Error passing response data to ${url}`)
-        }
-      }
-    })
+    await send(json)
     return res.status(200).json({ status: true, message: 'Payload processed' })
   } else {
     // parse data property, and update it
