@@ -295,6 +295,8 @@ const send = async result => {
         }
       }
     })
+  } else {
+    console.error('EGRESS_URLS is not provided.')
   }
 }
 
