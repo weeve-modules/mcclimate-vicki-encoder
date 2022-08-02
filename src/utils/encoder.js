@@ -3,6 +3,8 @@ Decoder documentation:
 https://docs.mclimate.eu/mclimate-lorawan-devices/devices/mclimate-vicki-lorawan/downlink-encoder
 
 */
+const fetch = require('node-fetch')
+const { EGRESS_URLS } = require('../config/config')
 const decToHex = (integer, shouldAddZero = true) => {
   let number = (+integer).toString(16).toUpperCase()
   if (number.length % 2 > 0 && shouldAddZero) {
@@ -271,8 +273,36 @@ const hexToBase64 = hexstring => {
   } else return hexstring
 }
 
+const send = async result => {
+  if (EGRESS_URLS) {
+    const eUrls = EGRESS_URLS.replace(/ /g, '')
+    const urls = eUrls.split(',')
+    urls.forEach(async url => {
+      if (url) {
+        try {
+          const callRes = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(result),
+          })
+          if (!callRes.ok) {
+            console.error(`Error passing response data to ${url}, status: ${callRes.status}`)
+          }
+        } catch (e) {
+          console.error(`Error making request to: ${url}, error: ${e.message}`)
+        }
+      }
+    })
+  } else {
+    console.error('EGRESS_URLS is not provided.')
+  }
+}
+
 module.exports = {
   execute,
   isSetterCommand,
   hexToBase64,
+  send,
 }

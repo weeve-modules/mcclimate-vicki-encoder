@@ -1,11 +1,11 @@
 # McClimate Vicki Encoder
 
-|  |  |
-| --- | --- |
-| Name | McClimate Vicki Encoder |
-| Version | v1.0.0 |
+|           |                                                                                                       |
+| --------- | ----------------------------------------------------------------------------------------------------- |
+| Name      | McClimate Vicki Encoder                                                                               |
+| Version   | v1.0.0                                                                                                |
 | DockerHub | [weevenetwork/mcclimate-vicki-encoder](https://hub.docker.com/r/weevenetwork/mcclimate-vicki-encoder) |
-| Authors | Mesud Pasic |
+| Authors   | Mesud Pasic                                                                                           |
 
 - [McClimate Vicki Encoder](#mcclimate-vicki-encoder)
   - [Description](#description)
@@ -35,12 +35,12 @@ Encoder for Vicki LoRaWAN's commands.
 
 ### Set by the weeve Agent on the edge-node
 
-| Environment Variables | type   | Description               |
-| --------------------- | ------ | ------------------------- |
-| MODULE_NAME           | string | Name of the module        |
-| INGRESS_HOST          | string | Host where app is running |
-| INGRESS_PORT          | string | Port where app is running |
-| EGRESS_URLS           | string | HTTP ReST endpoint for the next module            |
+| Environment Variables | type   | Description                            |
+| --------------------- | ------ | -------------------------------------- |
+| MODULE_NAME           | string | Name of the module                     |
+| INGRESS_HOST          | string | Host where app is running              |
+| INGRESS_PORT          | string | Port where app is running              |
+| EGRESS_URLS           | string | HTTP ReST endpoint for the next module |
 
 ## Available custom commands
 
