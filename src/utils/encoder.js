@@ -16,7 +16,7 @@ const dec2hexWithZero = i => {
   return (i + 0x10000).toString(16).substr(-4).toUpperCase()
 }
 const toHex = (cmdName, cmdId, ...params) => {
-  if (cmdName == 'SetOpenWindow')
+  if (cmdName === 'SetOpenWindow')
     return (
       cmdId.toString(16).padStart(2, '0') +
       params.reduce((paramString, param) => {
@@ -194,7 +194,7 @@ const execute = (command, params) => {
     // first check if any key is null for "set" commands, if yes, return false
     const keys = Object.keys(params)
     keys.forEach(key => {
-      if (params[key] == undefined || params[key] == null) {
+      if (params[key] === undefined || params[key] === null) {
         return false
       }
     })
@@ -202,27 +202,27 @@ const execute = (command, params) => {
       case 'sendCustomHexCommand':
         if (!keys.includes('command')) return false
         else return commands[command](params.command)
-        break
+
       case 'setChildLock':
         if (!keys.includes('enabled')) return false
         else return commands[command](params.enabled)
-        break
+
       case 'setInternalAlgoParams':
         if (!keys.includes('period') || !keys.includes('pFirstLast') || !keys.includes('pNext')) return false
         else return commands[command](params.period, params.pFirstLast, params.pNext)
-        break
+
       case 'setInternalAlgoTdiffParams':
         if (!keys.includes('cold') || !keys.includes('warm')) return false
         else return commands[command](params.cold, params.warm)
-        break
+
       case 'setJoinRetryPeriod':
         if (!keys.includes('period')) return false
         else return commands[command](params.period)
-        break
+
       case 'setKeepAlive':
         if (!keys.includes('time')) return false
         else return commands[command](params.time)
-        break
+
       case 'setOpenWindow':
         if (
           !keys.includes('enabled') ||
@@ -232,27 +232,26 @@ const execute = (command, params) => {
         )
           return false
         else return commands[command](params.enabled, params.delta, params.closeTime, params.motorPosition)
-        break
+
       case 'setOperationalMode':
         if (!keys.includes('mode')) return false
         else return commands[command](params.mode)
-        break
+
       case 'setTargetTemperature':
         if (!keys.includes('targetTemperature')) return false
         else return commands[command](params.targetTemperature)
-        break
+
       case 'setTargetTemperatureAndMotorPosition':
         if (!keys.includes('motorPosition') || !keys.includes('targetTemperature')) return false
         else return commands[command](params.motorPosition, params.targetTemperature)
-        break
+
       case 'setTemperatureRange':
         if (!keys.includes('min') || !keys.includes('max')) return false
         else return commands[command](params.min, params.max)
-        break
+
       case 'setUplinkType':
         if (!keys.includes('type')) return false
         else return commands[command](params.type)
-        break
     }
     // command not found
     return false
