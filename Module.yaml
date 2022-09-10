@@ -24,6 +24,7 @@ envs:                                   # Array of environment variables that wi
     dependencies: []
   - name: Single command name
     key: SINGLE_COMMAND
+    description: Supported commands to select if Execute Single Command is set to NO
     value: ''
     type: 'select'
     options:
